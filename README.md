@@ -2,7 +2,7 @@
 <div id="top"></div>
 <div align="center">
 <a href="https://gist.github.com/JamesF905">
-<img src="assets/images/logo.png" alt="Logo" width="40%" style="border: 4px inset #444; background:#333; border-radius: 20px">
+<img src="images/logo.png" alt="Logo" width="40%" style="border: 4px inset #444; background:#333; border-radius: 20px">
 </a>
 
 # Employee Manager
@@ -136,4 +136,4 @@ James Fidlin is a Junior Full Stack Web Developer, studying at the University of
 [Github-shield]: https://img.shields.io/badge/Github-white?style=for-the-badge&logo=Github&logoColor=222
 [Github-url]: https://github.com/JamesF905
 
-[product-screenshot]: assets/images/Project_Screenshot.gif
+[product-screenshot]: images/Project_Screenshot.gif
