@@ -5,7 +5,7 @@
 <img src="assets/images/logo.png" alt="Logo" width="40%" style="border: 4px inset #444; background:#333; border-radius: 20px">
 </a>
 
-# Note Taker
+# Employee Manager
 
 <p align="center">
   An employee manager app that uses node.js, npm inquirer, and MySql. <br><br>By: <a href="https://github.com/JamesF905" target="_blank"><strong>James Fidlin</strong></a><br/>July, 21, 2022
@@ -30,7 +30,7 @@
 
 [![Employee_Manager][product-screenshot]](https://github.com/JamesF905/Employee_Manager)
 
-This challenge requires me to use express npm and Heroku to serve up a Note taking application, that sends and recieves data from a json file.
+This challenge requires me to create a command line application that will allow a user to view and edit their employees, departments, and rolls. It uses node.js as a backend and npm inquirer as a prompt, to send and recieve data from a MySql database.
 <br /><br />
 
 ## Contents
