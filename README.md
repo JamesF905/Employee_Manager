@@ -87,6 +87,7 @@ THEN I am prompted to select an employee to update and their new role and this i
 * [Git Bash](https://git-scm.com/)
 * [node.js](https://nodejs.org/en/)
 * [node.js fs module](https://nodejs.dev/learn/the-nodejs-fs-module)
+* [npm inquirer](https://www.npmjs.com/package/inquirer)
 * [express.js](https://expressjs.com/)
 * [Heroku](https://www.heroku.com/)
 
