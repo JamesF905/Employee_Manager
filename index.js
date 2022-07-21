@@ -1,8 +1,8 @@
-//const db = require("./assets/js/connection"); // Get the database cennection
-const mySQL = require('mysql2'); // import mysql
+const db = require("./config/connection"); // Get the database cennection
+//const mySQL = require('mysql2'); // import mysql
 const inquirer = require('inquirer'); //import inquirer
 const ezTable = require('easy-table'); //import easy table
-
+/*
 const db = mySQL.createConnection({
     host: "localhost",
     user: "root",
@@ -13,4 +13,4 @@ const db = mySQL.createConnection({
 
 db.connect(function (err) {
     err ?  console.log(err) : console.log('Connected to Database!');
-});
+});*/
