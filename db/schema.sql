@@ -3,7 +3,7 @@ CREATE DATABASE employee_manager_db;
 
 USE employee_manager_db;
 
-DROP TABLE IF EXISTS departments;
+DROP TABLE IF EXISTS department;
 CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(30) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE roll (
     salary DECIMAL NOT NULL,
     department_id INT NOT NULL,
     UNIQUE(title),
-    FOREIGN KEY (department_id),
+    FOREIGN KEY (department_id)
     REFERENCES department(id)
 );
 
@@ -27,8 +27,9 @@ CREATE TABLE employee (
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     role_id INT NOT NULL,
-    manager_id INT NOT NULL
-    UNIQUE(title),
-    FOREIGN KEY (department_id),
-    REFERENCES department(id)
+    manager_id INT NULL,
+    FOREIGN KEY (role_id)
+    REFERENCES roll(id),
+    FOREIGN KEY (manager_id)
+    REFERENCES employee(id)
 );
