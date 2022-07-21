@@ -5,24 +5,30 @@ USE employee_manager_db;
 
 DROP TABLE IF EXISTS departments;
 CREATE TABLE department (
-    id INT NOT NULL AUTO-INCREMENT PRIMARY KEY,
-    name varchar(30) NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
     UNIQUE(name)
 );
 
 DROP TABLE IF EXISTS roll;
 CREATE TABLE roll (
-     id INT PRIMARY KEY
-    title VARCHAR(30)
-    salary DECIMAL
-    department_id INT    
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(30) NOT NULL,
+    salary DECIMAL NOT NULL,
+    department_id INT NOT NULL,
+    UNIQUE(title),
+    FOREIGN KEY (department_id),
+    REFERENCES department(id)
 );
 
 DROP TABLE IF EXISTS employee;
 CREATE TABLE employee (
-    id INT PRIMARY KEY
-    first_name VARCHAR(30)
-    last_name VARCHAR(30)
-    role_id INT
-    manager_id INT
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(30) NOT NULL,
+    last_name VARCHAR(30) NOT NULL,
+    role_id INT NOT NULL,
+    manager_id INT NOT NULL
+    UNIQUE(title),
+    FOREIGN KEY (department_id),
+    REFERENCES department(id)
 );
