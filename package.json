@@ -1,0 +1,28 @@
+{
+  "name": "employee_manager",
+  "version": "1.0.0",
+  "description": "<div style=\"background:#222; border: 4px outset #333; padding:20px; font-family:arial\"> <div id=\"top\"></div> <div align=\"center\"> <a href=\"https://gist.github.com/JamesF905\"> <img src=\"assets/images/logo.png\" alt=\"Logo\" width=\"40%\" style=\"border: 4px inset #444; background:#333; border-radius: 20px\"> </a>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamesF905/Employee_Manager.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JamesF905/Employee_Manager/issues"
+  },
+  "homepage": "https://github.com/JamesF905/Employee_Manager#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "easy-table": "^1.2.0",
+    "inquirer": "^9.0.2",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.19"
+  }
+}
