@@ -66,10 +66,6 @@ function main_menu(){
     });        
 };
 
-function queryPoster(){
-
-}
-
 function viewThem(table_name,query){
     db.query(query, (err, res) => {
         if(!err){
@@ -95,24 +91,14 @@ function addDepartment(){
       {
         type: 'input',
         name: 'name',
-        message: `What is ${grammah} name?`,
-      },
-      {
-        type: 'number',
-        name: 'employee_ID',
-        message: `Please enter ${grammah} Employee ID.`,
-      },
-      {
-        type: 'input',
-        name: 'email_address',
-        message: `Enter ${grammah} email address.`,
-      },
-      {
-        type: `${unique_input_type}`,
-        name: 'unique',
-        message: `${unique_message}`,
-      },         
+        message: `What is the name?`,
+      }         
     ])
+    .then((res) => {
+        db.query(`INSERT INTO department (name) VALUES ("${res.name}")`, (err, res) => {
+            let status = err ? console.log(err) : console.log("added!");
+        })
+    })
 }
 
 function addRole(){
