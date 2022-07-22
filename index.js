@@ -47,7 +47,7 @@ function main_menu(){
         type: "list",
         name: "choice",
         message: "What would you like to do?",
-        choices: ['View all Departments', 'View all Roles', 'View all Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Exit'],
+        choices: ['View all Departments', 'View all Roles', 'View all Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee', 'Exit'],
     })
     .then(menu => {
         if (menu.choice !== "Exit") {
@@ -57,7 +57,7 @@ function main_menu(){
             menu.choice === "Add a Department" ? addDepartment() :
             menu.choice === "Add a Role" ? addRole() :
             menu.choice === "Add an Employee" ? addEmployee() :
-            menu.choice === "Add an Employee" ? updateEmployee() :
+            menu.choice === "Update an Employee" ? updateEmployee() :
             null;
         }else{
             console.log("See Ya!");
@@ -184,48 +184,100 @@ function addEmployee(){
       }   
     ])
     .then((res) => {
-        db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", "${res.last_name}", ${res.role}, ${res.manager})`, (err, res) => {
+        db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", "${res.last_name}", ${res.role}, ${res.manager})`, (err) => {
             err ? console.log(err) : console.log("added!");
             main_menu();
         })
     })
 }
 
+
+
 function updateEmployee(){
-    let choices = [];
+    let employees = [];
+    db.query(`SELECT * FROM employee`, (err, res) => {
+        //err ? console.log(err) : console.log(res);
+        for(i=0;i<res.length;i++){
+            //console.log(res[i].first_name);
+            employees.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id});
+        };  
+        //console.log(employees); 
+        inquirer
+        .prompt([
+            {
+                type: 'list',
+                name: 'emp_id',
+                message: `Who do you want to Update?`,
+                choices: employees,
+            }  
+        ])
+        .then((res1) => {
+            let role_choices = [];
+            db.query(`SELECT * FROM roles`, (err, res) => {
+                //err ? console.log(err) : console.log(res);
+                for(i=0;i<res.length;i++){
+                    //console.log(res[i].first_name);
+                    role_choices.push({name: `${res[i].title}`, value: res[i].id});
+                };  
+                //console.log(role_choices); 
+                inquirer
+                .prompt([
+                    {
+                        type: 'list',
+                        name: 'role',
+                        message: `What is their new roll?`,
+                        choices: role_choices,
+                    }  
+                ])
+                .then((res2) => {
+                    db.query(`UPDATE employee SET roles_id = ${res2.role} WHERE id = ${res1.emp_id}`, (err) => {
+                        err ? console.log(err) : console.log("updated!");
+                        main_menu();
+                    });                   
+                });  
+            });
+            
+        });  
+    });
+}
+    /*
+    let r_choices = [];
     db.query(`SELECT first_name, last_name, id FROM employee`, (err, res) => {
         //err ? console.log(err) : console.log(res);
         for(i=0;i<res.length;i++){
-            choices.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id})
+            r_choices.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id});
         };     
-    })
-
+    });
+    console.log(employees);
+    console.log(r_choices);
+    
     inquirer
     .prompt([
       {
         type: 'list',
-        name: 'employee',
+        name: 'emp',
         message: `Who's information do you want to update?`,
-        choices: choices,
+        choices: employees,
       }   
     ])
     .then((res) => {
-        let employee = res.employee;
+        let employee_id = res.emp;
         inquirer
         .prompt([
             {
                 type: 'list',
                 name: 'role',
                 message: `What is their new roll?`,
-                choices: choices,
+                choices: r_choices,
             }  
         ])
         .then((res) => {
-            db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", "${res.last_name}", ${res.role}, ${res.manager})`, (err, res) => {
-                err ? console.log(err) : console.log("added!");
+            let role_id = res.role;
+            db.query(`UPDATE employee SET roles_id = ${role_id} WHERE id = ${employee_id}`, (err) => {
+                err ? console.log(err) : console.log("updated!");
                 main_menu();
             })
         })
     })
 }
-
+*/
