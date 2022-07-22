@@ -1,8 +1,6 @@
-//const db = require("./config/connection"); // Get the database cennection
 const inquirer = require('inquirer'); //import inquirer
-//const Table = require('easy-table');
 require('console.table');
-const mySQL = require('mysql'); // import mysql
+const mySQL = require('mysql2'); // import mysql
 require('dotenv').config(); // import in order to use dotenv to pull database credentials from the env file
 const db = mySQL.createConnection({
     host: "localhost",
@@ -12,8 +10,9 @@ const db = mySQL.createConnection({
     
 });
 
+//Connect to database
+
 db.connect(function (err) {
-    //err ? console.log(err) : console.log(`Connected to Database!`); // error handler/success log
     if(err){
         console.log(err)
     }else{
@@ -22,9 +21,7 @@ db.connect(function (err) {
     };
 });
 
-
-//const {viewDepartments, viewRoles, viewEmployees} = require('./assets/js/viewScripts');
-//const {addDepartment, addRole, addEmployee} = require('./assets/js/addScripts');
+//sets queries to use in the menu function
 
 const sql_query = {
     departments : `SELECT * FROM department ORDER BY id;`,
@@ -41,6 +38,8 @@ const sql_query = {
     JOIN roles ON roles.id = employee.roles_id 
     JOIN department ON department.id = roles.department_id ORDER BY employee.id`
 };
+
+//function to start the main menu
 
 function main_menu(){
     inquirer.prompt({
@@ -66,6 +65,8 @@ function main_menu(){
     });        
 };
 
+//function to handle all use requests
+
 function viewThem(table_name,query){
     db.query(query, (err, res) => {
         if(!err){
@@ -85,6 +86,8 @@ function viewThem(table_name,query){
     });
 }
 
+// function to add a department
+
 function addDepartment(){
     inquirer
     .prompt([
@@ -102,14 +105,18 @@ function addDepartment(){
     })
 }
 
+//function to add a roll
+
 function addRole(){
     let choices = [];
     db.query(`SELECT name, id FROM department`, (err, res) => {
-        //err ? console.log(err) : console.log(res);
-        for(i=0;i<res.length;i++){
-            choices.push({name: res[i].name, value: res[i].id})
-        };
-        //console.log(choices);       
+        if(!err){
+            for(i=0;i<res.length;i++){
+                choices.push({name: res[i].name, value: res[i].id})
+            };
+        } else {
+            console.log(err);
+        }      
     })
 
     inquirer
@@ -139,23 +146,30 @@ function addRole(){
     })
 }
 
+//function to add an employee
+
 function addEmployee(){
     let choices = [];
     db.query(`SELECT title, id FROM roles`, (err, res) => {
-        //err ? console.log(err) : console.log(res);
-        for(i=0;i<res.length;i++){
-            choices.push({name: res[i].title, value: res[i].id})
-        };
-        //console.log(choices);       
+        if(!err){
+            for(i=0;i<res.length;i++){
+                choices.push({name: res[i].title, value: res[i].id})
+            };
+        } else {
+            console.log(err);
+        };      
     })
 
     let employees = [];
     db.query(`SELECT first_name, last_name, id FROM employee`, (err, res) => {
-        //err ? console.log(err) : console.log(res);
-        employees.push({name: `NO MANAGER`, value: null});
-        for(i=0;i<res.length;i++){
-            employees.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id})
-        };     
+        if(!err){
+            employees.push({name: `NO MANAGER`, value: null});
+            for(i=0;i<res.length;i++){
+                employees.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id})
+            };
+        } else {
+            console.log(err);
+        };    
     })
 
     inquirer
@@ -191,17 +205,20 @@ function addEmployee(){
     })
 }
 
-
+//function to update an employee
 
 function updateEmployee(){
     let employees = [];
     db.query(`SELECT * FROM employee`, (err, res) => {
-        //err ? console.log(err) : console.log(res);
-        for(i=0;i<res.length;i++){
-            //console.log(res[i].first_name);
-            employees.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id});
-        };  
-        //console.log(employees); 
+        if(!err){
+            for(i=0;i<res.length;i++){
+                //console.log(res[i].first_name);
+                employees.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id});
+            };  
+        } else {
+            console.log(err);
+        };
+
         inquirer
         .prompt([
             {
@@ -214,12 +231,15 @@ function updateEmployee(){
         .then((res1) => {
             let role_choices = [];
             db.query(`SELECT * FROM roles`, (err, res) => {
-                //err ? console.log(err) : console.log(res);
-                for(i=0;i<res.length;i++){
-                    //console.log(res[i].first_name);
-                    role_choices.push({name: `${res[i].title}`, value: res[i].id});
-                };  
-                //console.log(role_choices); 
+                if(!err){
+                    for(i=0;i<res.length;i++){
+                        //console.log(res[i].first_name);
+                        role_choices.push({name: `${res[i].title}`, value: res[i].id});
+                    };  
+                } else {
+                    console.log(err);
+                };
+                
                 inquirer
                 .prompt([
                     {
@@ -239,45 +259,4 @@ function updateEmployee(){
             
         });  
     });
-}
-    /*
-    let r_choices = [];
-    db.query(`SELECT first_name, last_name, id FROM employee`, (err, res) => {
-        //err ? console.log(err) : console.log(res);
-        for(i=0;i<res.length;i++){
-            r_choices.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id});
-        };     
-    });
-    console.log(employees);
-    console.log(r_choices);
-    
-    inquirer
-    .prompt([
-      {
-        type: 'list',
-        name: 'emp',
-        message: `Who's information do you want to update?`,
-        choices: employees,
-      }   
-    ])
-    .then((res) => {
-        let employee_id = res.emp;
-        inquirer
-        .prompt([
-            {
-                type: 'list',
-                name: 'role',
-                message: `What is their new roll?`,
-                choices: r_choices,
-            }  
-        ])
-        .then((res) => {
-            let role_id = res.role;
-            db.query(`UPDATE employee SET roles_id = ${role_id} WHERE id = ${employee_id}`, (err) => {
-                err ? console.log(err) : console.log("updated!");
-                main_menu();
-            })
-        })
-    })
-}
-*/
+}   
