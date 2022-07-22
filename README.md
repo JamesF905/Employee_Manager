@@ -83,13 +83,14 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 * [Javascript](https://www.javascript.com/)
 * [Visual Studio Code](https://code.visualstudio.com/)
+* [MySql Server](https://dev.mysql.com/downloads/mysql/)
 * [Git Hub](https://github.com/)
 * [Git Bash](https://git-scm.com/)
 * [node.js](https://nodejs.org/en/)
 * [npm inquirer](https://www.npmjs.com/package/inquirer)
-* [npm mysql2](https://www.npmjs.com/package/inquirer)
-* [npm console.table](https://www.npmjs.com/package/inquirer)
-* [npm dotenv](https://www.npmjs.com/package/inquirer)
+* [npm mysql2](https://www.npmjs.com/package/mysql2)
+* [npm console.table](https://www.npmjs.com/package/console.table)
+* [npm dotenv](https://www.npmjs.com/package/dotenv)
 
 <p align="center"><a href="#contents">(back to top)</a></p>
 <br/><br/>
