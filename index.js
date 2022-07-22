@@ -1,7 +1,8 @@
 //const db = require("./config/connection"); // Get the database cennection
 const inquirer = require('inquirer'); //import inquirer
-const cTable = require('console.table'); //import console.table
-const mySQL = require('mysql2'); // import mysql
+//const Table = require('easy-table');
+require('console.table');
+const mySQL = require('mysql'); // import mysql
 require('dotenv').config(); // import in order to use dotenv to pull database credentials from the env file
 const db = mySQL.createConnection({
     host: "localhost",
@@ -12,7 +13,13 @@ const db = mySQL.createConnection({
 });
 
 db.connect(function (err) {
-    err ? console.log(err) : console.log(`Connected to Database!`); // error handler/success log
+    //err ? console.log(err) : console.log(`Connected to Database!`); // error handler/success log
+    if(err){
+        console.log(err)
+    }else{
+        console.log(`Connected to Database!`)
+        main_menu();
+    };
 });
 
 
@@ -29,28 +36,42 @@ function main_menu(){
     })
     .then(menu => {
         if (menu.choice !== "Exit") {
-            menu.choice === "View all Departments" ? viewDepartments() :
-            menu.choice === "View all Roles" ? viewRoles() :
-            menu.choice === "View all Employees" ? viewEmployees() :
+            menu.choice === "View all Departments" ? viewThem("Department", "id") :
+            menu.choice === "View all Roles" ? viewThem("Roles") :
+            menu.choice === "View all Employees" ? viewThem("Employees") :
             menu.choice === "Add a Department" ? addDepartment() :
             menu.choice === "Add a Role" ? addRole() :
             menu.choice === "Add an Employee" ? addEmployee() :
             null;
-            //main_menu();
         }else{
             console.log("See Ya!");
             process.exit();
+        };
+    });        
+};
+
+
+
+function viewThem(name,o){
+    order = o ? ` ORDER BY ${o}` : '';
+    db.query(`SELECT * FROM ${name}${order};`, (err, res) => {
+        if(!err){
+            console.log("\nDepartment\n");
+            console.table(res)
+            main_menu();
+        }else{
+            console.log(err);
         }
-    })        
+    });
 }
 
-main_menu();
-
 function viewDepartments(){
-    console.log("You selected view Department");
-    db.query(`SELECT id, name FROM department;`, (err, res) => err ? console.log(err) : console.table(res));
-    //main_menu();
-    console.table(`\n`);   
+    db.query(`SELECT * FROM department ORDER BY id;`, (err, res) => {
+        console.log("Department\n");
+        console.table(res)
+        main_menu();
+    });
+    //console.table(`\n`);   
 }
 
 function viewRoles(){
