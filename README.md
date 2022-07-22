@@ -86,10 +86,10 @@ THEN I am prompted to select an employee to update and their new role and this i
 * [Git Hub](https://github.com/)
 * [Git Bash](https://git-scm.com/)
 * [node.js](https://nodejs.org/en/)
-* [node.js fs module](https://nodejs.dev/learn/the-nodejs-fs-module)
 * [npm inquirer](https://www.npmjs.com/package/inquirer)
-* [express.js](https://expressjs.com/)
-* [Heroku](https://www.heroku.com/)
+* [npm mysql2](https://www.npmjs.com/package/inquirer)
+* [npm console.table](https://www.npmjs.com/package/inquirer)
+* [npm dotenv](https://www.npmjs.com/package/inquirer)
 
 <p align="center"><a href="#contents">(back to top)</a></p>
 <br/><br/>
@@ -98,17 +98,17 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 1) Install GitBash
 
-2) Install Node.js
+2) Install MySql server
 
-3) Clone this repo
+3) Install Node.js
 
-4) Run GitBash from your cloned folder
+4) Clone this repo
 
-5) type "npm i" in GitBash
+5) Run GitBash from your cloned folder
 
-6) type "node index.js" in GitBash to start the application and fill out the form, an index.html file will be generated and stored in the "dist/" folder
+6) type "npm i" in GitBash
 
-7) type "npm run test" to run the jest test suites
+7) type "npm start" to run 
 
 <p align="center"><a href="#contents">(back to top)</a></p>
 <br/><br/>
