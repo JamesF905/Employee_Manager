@@ -26,6 +26,21 @@ db.connect(function (err) {
 //const {viewDepartments, viewRoles, viewEmployees} = require('./assets/js/viewScripts');
 //const {addDepartment, addRole, addEmployee} = require('./assets/js/addScripts');
 
+const sql_query = {
+    departments : `SELECT * FROM department ORDER BY id;`,
+    roles : `SELECT roles.id, roles.title, roles.salary, department.name AS department FROM roles JOIN department ON department.id = roles.department_id`,
+    employees : `
+    SELECT employee.id, 
+    employee.first_name, 
+    employee.last_name, 
+    roles.title, 
+    roles.salary, 
+    department.name AS department, 
+    employee.manager_id AS manager
+    FROM employee
+    JOIN roles ON roles.id = employee.roles_id 
+    JOIN department ON department.id = roles.department_id ORDER BY employee.id`
+};
 
 function main_menu(){
     inquirer.prompt({
@@ -36,9 +51,9 @@ function main_menu(){
     })
     .then(menu => {
         if (menu.choice !== "Exit") {
-            menu.choice === "View all Departments" ? viewDepartments("Department", "id") :
-            menu.choice === "View all Roles" ? viewRoles("Roles") :
-            menu.choice === "View all Employees" ? viewEmployees("Employee") :
+            menu.choice === "View all Departments" ? viewThem("Departments", ) :
+            menu.choice === "View all Roles" ? viewThem("Roles", ) :
+            menu.choice === "View all Employees" ? viewThem("Employees", ) :
             menu.choice === "Add a Department" ? addDepartment() :
             menu.choice === "Add a Role" ? addRole() :
             menu.choice === "Add an Employee" ? addEmployee() :
@@ -54,13 +69,17 @@ function queryPoster(){
 
 }
 
-function viewThem(name,o){
-    order = o ? ` ORDER BY ${o}` : '';
-    db.query(`SELECT * FROM ${name}${order};`, (err, res) => {
+function viewThem(table_name,query){
+    db.query(query, (err, res) => {
         if(!err){
-            //Handler to find the names of departments if name = roles
-            //console.log(res[0].department_id);
-            console.log(`\n${name}\n`);            
+            console.log(`\n${table_name}\n`); 
+            // This is a workaround for the self join of manager not working when querying the employees table
+            if (table_name === "Employees"){
+                for(i=0;i<res.length;i++){
+                    let target_key = Object.keys(res).find(key => res[key].id === res[i].manager);
+                    res[i].manager = target_key ? `${res[target_key].first_name} ${res[target_key].last_name}` : "";
+                }
+            }
             console.table(res)
             main_menu();
         }else{
@@ -79,7 +98,7 @@ function viewDepartments(){
 }
 
 function viewRoles(){
-    db.query(`SELECT roles.id, roles.title, roles.salary, department.name AS Department FROM roles JOIN department ON department.id = roles.department_id`, (err, res) => {
+    db.query(`SELECT roles.id, roles.title, roles.salary, department.name AS department FROM roles JOIN department ON department.id = roles.department_id`, (err, res) => {
         console.log("Department\n");
         console.table(res)
         main_menu();
@@ -88,12 +107,25 @@ function viewRoles(){
 }
 
 function viewEmployees(){
-    db.query(`SELECT employee.id, employee.first_name, employee.last_name, roles.title, roles.salary, department.name AS Department, manager.first_name AS Manager
-    FROM employee e1, employee manager 
+    db.query(`
+    SELECT employee.id, 
+    employee.first_name, 
+    employee.last_name, 
+    roles.title, 
+    roles.salary, 
+    department.name AS department, 
+    employee.manager_id AS manager
+    FROM employee
     JOIN roles ON roles.id = employee.roles_id 
-    JOIN department ON department.id = roles.department_id 
-    JOIN employee manager, ON manager.id = manager_id`, (err, res) => {
-        console.log("Department\n");
+    JOIN department ON department.id = roles.department_id ORDER BY employee.id`, (err, res) => {
+        console.log("\nEmployees\n");        
+        
+        // This is a workaround for the self join of manager not working when querying the employees table
+        for(i=0;i<res.length;i++){
+            let target_key = Object.keys(res).find(key => res[key].id === res[i].manager);
+            res[i].manager = target_key ? `${res[target_key].first_name} ${res[target_key].last_name}` : "";
+        }
+
         console.table(res)
         main_menu();
     });
