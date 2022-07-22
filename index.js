@@ -140,7 +140,57 @@ function addRole(){
 }
 
 function addEmployee(){
-    
+    let choices = [];
+    db.query(`SELECT title, id FROM roles`, (err, res) => {
+        //err ? console.log(err) : console.log(res);
+        for(i=0;i<res.length;i++){
+            choices.push({name: res[i].title, value: res[i].id})
+        };
+        //console.log(choices);       
+    })
+/*
+    let m_choices = [];
+    db.query(`SELECT first_name, last_name, id FROM employee WHERE roles_id=`, (err, res) => {
+        //err ? console.log(err) : console.log(res);
+        for(i=0;i<res.length;i++){
+            m_choices.push({name: res[i].title, value: res[i].id})
+        };
+        //console.log(choices);       
+    })*/
+    inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'first_name',
+        message: `What is their first name`,
+      },
+      {
+        type: 'input',
+        name: 'last_name',
+        message: `What is their last name`,
+      },
+      {
+        type: 'list',
+        name: 'role',
+        message: `What is their roll?`,
+        choices: choices,
+      }     
+    ])
+    .then((res) => {
+        let m_choices = [];
+        db.query(`SELECT first_name, last_name, id FROM employee WHERE roles_id=${res.role} AND manager_id=NULL`, (err, res) => {
+            //err ? console.log(err) : console.log(res);
+            for(i=0;i<res.length;i++){
+                m_choices.push({name: res[i].title, value: res[i].id})
+            };
+            //console.log(choices);       
+        })
+        
+        db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", ${res.last_name}, ${res.role}, ${res.manager})`, (err, res) => {
+            err ? console.log(err) : console.log("added!");
+            main_menu();
+        })
+    })
 }
 
 function updateEmployee(){
