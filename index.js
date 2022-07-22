@@ -149,14 +149,13 @@ function addEmployee(){
         //console.log(choices);       
     })
 
-    let users = [];
+    let employees = [];
     db.query(`SELECT first_name, last_name, id FROM employee`, (err, res) => {
         //err ? console.log(err) : console.log(res);
+        employees.push({name: `NO MANAGER`, value: null});
         for(i=0;i<res.length;i++){
-            users.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id})
-        };
-        //users.push({name: `NO MANAGER`, value: NULL})
-        //console.log(choices);       
+            employees.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id})
+        };     
     })
 
     inquirer
@@ -180,12 +179,11 @@ function addEmployee(){
       {
         type: 'list',
         name: 'manager',
-        message: `What is their roll?`,
-        choices: users,
+        message: `Who is their manager?`,
+        choices: employees,
       }   
     ])
     .then((res) => {
-        console.log(res.role);
         db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", "${res.last_name}", ${res.role}, ${res.manager})`, (err, res) => {
             err ? console.log(err) : console.log("added!");
             main_menu();
