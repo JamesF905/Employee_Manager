@@ -97,6 +97,7 @@ function addDepartment(){
     .then((res) => {
         db.query(`INSERT INTO department (name) VALUES ("${res.name}")`, (err, res) => {
             err ? console.log(err) : console.log("added!");
+            main_menu();
         })
     })
 }
@@ -104,13 +105,13 @@ function addDepartment(){
 function addRole(){
     let choices = [];
     db.query(`SELECT name, id FROM department`, (err, res) => {
-        err ? console.log(err) : console.log(res);
-        
-    })/*
-    for(i=0;i<choices.length;i++){
-        choices
-    }*/
-/*
+        //err ? console.log(err) : console.log(res);
+        for(i=0;i<res.length;i++){
+            choices.push({name: res[i].name, value: res[i].id})
+        };
+        //console.log(choices);       
+    })
+
     inquirer
     .prompt([
       {
@@ -131,10 +132,11 @@ function addRole(){
       }          
     ])
     .then((res) => {
-        db.query(`INSERT INTO roles (title, salary, department_id) VALUES()`, (err, res) => {
+        db.query(`INSERT INTO roles (title, salary, department_id) VALUES("${res.name}", ${res.salary}, ${res.department})`, (err, res) => {
             err ? console.log(err) : console.log("added!");
+            main_menu();
         })
-    })*/
+    })
 }
 
 function addEmployee(){
