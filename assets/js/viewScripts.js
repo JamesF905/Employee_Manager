@@ -1,5 +1,6 @@
 function viewDepartments(){
     console.log("You selected view Department");
+    
 }
 
 function viewRoles(){

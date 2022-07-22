@@ -1,9 +1,9 @@
 const db = require("./config/connection"); // Get the database cennection
 const inquirer = require('inquirer'); //import inquirer
-const ezTable = require('easy-table'); //import easy table
+const Table = require('console.table'); //import console.table
 
-const {viewDepartments, viewRoles, viewEmployees} = require('./assets/js/viewScripts');
-const {addDepartment, addRole, addEmployee} = require('./assets/js/addScripts');
+//const {viewDepartments, viewRoles, viewEmployees} = require('./assets/js/viewScripts');
+//const {addDepartment, addRole, addEmployee} = require('./assets/js/addScripts');
 
 
 function main_menu(){
@@ -31,3 +31,16 @@ function main_menu(){
 }
 
 main_menu();
+
+function viewDepartments(){
+    console.log("You selected view Department");
+    db.query(`SELECT id, name FROM department;`, (err, res) => {Table(res)} )   
+}
+
+function viewRoles(){
+    console.log("You selected view Roles");
+}
+
+function viewEmployees(){
+    console.log("You selected view Employees");
+}

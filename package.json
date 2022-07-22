@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/JamesF905/Employee_Manager#readme",
   "dependencies": {
+    "ctable": "^0.0.3",
     "dotenv": "^16.0.1",
     "easy-table": "^1.2.0",
     "inquirer": "^8.2.4",
