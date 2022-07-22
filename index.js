@@ -148,15 +148,17 @@ function addEmployee(){
         };
         //console.log(choices);       
     })
-/*
-    let m_choices = [];
-    db.query(`SELECT first_name, last_name, id FROM employee WHERE roles_id=`, (err, res) => {
+
+    let users = [];
+    db.query(`SELECT first_name, last_name, id FROM employee`, (err, res) => {
         //err ? console.log(err) : console.log(res);
         for(i=0;i<res.length;i++){
-            m_choices.push({name: res[i].title, value: res[i].id})
+            users.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id})
         };
+        users.push({name: `NO MANAGER`, value: NULL})
         //console.log(choices);       
-    })*/
+    })
+
     inquirer
     .prompt([
       {
@@ -174,22 +176,43 @@ function addEmployee(){
         name: 'role',
         message: `What is their roll?`,
         choices: choices,
-      }     
+      },
+      {
+        type: 'list',
+        name: 'manager',
+        message: `Who is their manager?`,
+        choices: users,
+      }    
     ])
     .then((res) => {
-        let m_choices = [];
-        db.query(`SELECT first_name, last_name, id FROM employee WHERE roles_id=${res.role} AND manager_id=NULL`, (err, res) => {
+        let manager = [];
+        let dept_roles_ids = [];
+        console.log(res.role);
+        db.query(`SELECT id FROM roles WHERE department_id=${res.role.d_id}`, (err, res) => {
+            
             //err ? console.log(err) : console.log(res);
+            //manager = {name: `${res[0].first_name} ${res[0].last_name}`, value: res[0].id};
+            
             for(i=0;i<res.length;i++){
-                m_choices.push({name: res[i].title, value: res[i].id})
+                dept_roles_ids.push(res[i].id);
             };
-            //console.log(choices);       
+            console.log(dept_roles_ids.toString());      
         })
-        
-        db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", ${res.last_name}, ${res.role}, ${res.manager})`, (err, res) => {
+        db.query(`SELECT id, first_name, last_name FROM employee WHERE roles_id IN (${dept_roles_ids.toString()}) AND manager_id IS NULL`, (err, res) => {
+            
+            //err ? console.log(err) : console.log(res);
+            //manager = {name: `${res[0].first_name} ${res[0].last_name}`, value: res[0].id};
+            /*
+            for(i=0;i<res.length;i++){
+                manager.push({name: res[i].title, value: res[i].id})
+            };*/
+            console.log(res);       
+        })
+        /*
+        db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", ${res.last_name}, ${res.role}, ${manager})`, (err, res) => {
             err ? console.log(err) : console.log("added!");
             main_menu();
-        })
+        })*/
     })
 }
 
