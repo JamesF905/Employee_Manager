@@ -28,14 +28,14 @@ db.connect(function (err) {
 
 const sql_query = {
     departments : `SELECT * FROM department ORDER BY id;`,
-    roles : `SELECT roles.id, roles.title, roles.salary, department.name AS department FROM roles JOIN department ON department.id = roles.department_id`,
+    roles : `SELECT roles.title, roles.id, department.name AS department, roles.salary FROM roles JOIN department ON department.id = roles.department_id`,
     employees : `
     SELECT employee.id, 
     employee.first_name, 
     employee.last_name, 
-    roles.title, 
+    roles.title,  
+    department.name AS department,
     roles.salary, 
-    department.name AS department, 
     employee.manager_id AS manager
     FROM employee
     JOIN roles ON roles.id = employee.roles_id 
@@ -51,12 +51,13 @@ function main_menu(){
     })
     .then(menu => {
         if (menu.choice !== "Exit") {
-            menu.choice === "View all Departments" ? viewThem("Departments", ) :
-            menu.choice === "View all Roles" ? viewThem("Roles", ) :
-            menu.choice === "View all Employees" ? viewThem("Employees", ) :
+            menu.choice === "View all Departments" ? viewThem("Departments", sql_query.departments) :
+            menu.choice === "View all Roles" ? viewThem("Roles", sql_query.roles) :
+            menu.choice === "View all Employees" ? viewThem("Employees", sql_query.employees) :
             menu.choice === "Add a Department" ? addDepartment() :
             menu.choice === "Add a Role" ? addRole() :
             menu.choice === "Add an Employee" ? addEmployee() :
+            menu.choice === "Add an Employee" ? updateEmployee() :
             null;
         }else{
             console.log("See Ya!");
@@ -88,45 +89,41 @@ function viewThem(table_name,query){
     });
 }
 
-function viewDepartments(){
-    db.query(`SELECT * FROM department ORDER BY id;`, (err, res) => {
-        console.log("Department\n");
-        console.table(res)
-        main_menu();
-    });
-    //console.table(`\n`);   
+function addDepartment(){
+    inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'name',
+        message: `What is ${grammah} name?`,
+      },
+      {
+        type: 'number',
+        name: 'employee_ID',
+        message: `Please enter ${grammah} Employee ID.`,
+      },
+      {
+        type: 'input',
+        name: 'email_address',
+        message: `Enter ${grammah} email address.`,
+      },
+      {
+        type: `${unique_input_type}`,
+        name: 'unique',
+        message: `${unique_message}`,
+      },         
+    ])
 }
 
-function viewRoles(){
-    db.query(`SELECT roles.id, roles.title, roles.salary, department.name AS department FROM roles JOIN department ON department.id = roles.department_id`, (err, res) => {
-        console.log("Department\n");
-        console.table(res)
-        main_menu();
-    });
-    //console.table(`\n`);
+function addRole(){
+    
 }
 
-function viewEmployees(){
-    db.query(`
-    SELECT employee.id, 
-    employee.first_name, 
-    employee.last_name, 
-    roles.title, 
-    roles.salary, 
-    department.name AS department, 
-    employee.manager_id AS manager
-    FROM employee
-    JOIN roles ON roles.id = employee.roles_id 
-    JOIN department ON department.id = roles.department_id ORDER BY employee.id`, (err, res) => {
-        console.log("\nEmployees\n");        
-        
-        // This is a workaround for the self join of manager not working when querying the employees table
-        for(i=0;i<res.length;i++){
-            let target_key = Object.keys(res).find(key => res[key].id === res[i].manager);
-            res[i].manager = target_key ? `${res[target_key].first_name} ${res[target_key].last_name}` : "";
-        }
-
-        console.table(res)
-        main_menu();
-    });
+function addEmployee(){
+    
 }
+
+function updateEmployee(){
+    
+}
+
