@@ -185,34 +185,8 @@ function addEmployee(){
       }    
     ])
     .then((res) => {
-        let manager = [];
-        let dept_roles_ids = [];
-        console.log(res.role);
-        db.query(`SELECT id FROM roles WHERE department_id=${res.role.d_id}`, (err, res) => {
-            
-            //err ? console.log(err) : console.log(res);
-            //manager = {name: `${res[0].first_name} ${res[0].last_name}`, value: res[0].id};
-            
-            for(i=0;i<res.length;i++){
-                dept_roles_ids.push(res[i].id);
-            };
-            console.log(dept_roles_ids.toString());      
-        })
-        db.query(`SELECT id, first_name, last_name FROM employee WHERE roles_id IN (${dept_roles_ids.toString()}) AND manager_id IS NULL`, (err, res) => {
-            
-            //err ? console.log(err) : console.log(res);
-            //manager = {name: `${res[0].first_name} ${res[0].last_name}`, value: res[0].id};
-            /*
-            for(i=0;i<res.length;i++){
-                manager.push({name: res[i].title, value: res[i].id})
-            };*/
-            console.log(res);       
-        })
-        /*
-        db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", ${res.last_name}, ${res.role}, ${manager})`, (err, res) => {
-            err ? console.log(err) : console.log("added!");
-            main_menu();
-        })*/
+        console.log(res.role);     
+        
     })
 }
 
