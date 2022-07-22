@@ -192,6 +192,40 @@ function addEmployee(){
 }
 
 function updateEmployee(){
-    
+    let choices = [];
+    db.query(`SELECT first_name, last_name, id FROM employee`, (err, res) => {
+        //err ? console.log(err) : console.log(res);
+        for(i=0;i<res.length;i++){
+            choices.push({name: `${res[i].first_name} ${res[i].last_name}`, value: res[i].id})
+        };     
+    })
+
+    inquirer
+    .prompt([
+      {
+        type: 'list',
+        name: 'employee',
+        message: `Who's information do you want to update?`,
+        choices: choices,
+      }   
+    ])
+    .then((res) => {
+        let employee = res.employee;
+        inquirer
+        .prompt([
+            {
+                type: 'list',
+                name: 'role',
+                message: `What is their new roll?`,
+                choices: choices,
+            }  
+        ])
+        .then((res) => {
+            db.query(`INSERT INTO employee (first_name, last_name, roles_id, manager_id) VALUES("${res.first_name}", "${res.last_name}", ${res.role}, ${res.manager})`, (err, res) => {
+                err ? console.log(err) : console.log("added!");
+                main_menu();
+            })
+        })
+    })
 }
 
