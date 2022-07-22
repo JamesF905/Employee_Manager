@@ -15,7 +15,7 @@
 ### Walkthrough Video Link
 
 <p align="center">
-    <a href=""><strong></strong></a>
+    <a href="https://drive.google.com/file/d/1rob4CTx5ATSnt3z43L6bhaeTX_UDbfeo/view"><strong>https://drive.google.com/file/d/1rob4CTx5ATSnt3z43L6bhaeTX_UDbfeo/view</strong></a>
 </p>
 
 ### Repo Link
@@ -136,4 +136,4 @@ James Fidlin is a Junior Full Stack Web Developer, studying at the University of
 [Github-shield]: https://img.shields.io/badge/Github-white?style=for-the-badge&logo=Github&logoColor=222
 [Github-url]: https://github.com/JamesF905
 
-[product-screenshot]: images/Project_Screenshot.gif
+[product-screenshot]: images/Project_Screenshot.png
