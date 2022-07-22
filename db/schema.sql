@@ -10,8 +10,8 @@ CREATE TABLE department (
     UNIQUE(name)
 );
 
-DROP TABLE IF EXISTS roll;
-CREATE TABLE roll (
+DROP TABLE IF EXISTS roles;
+CREATE TABLE roles (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
@@ -26,8 +26,8 @@ CREATE TABLE employee (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    role_id INT NOT NULL,
+    roles_id INT NOT NULL,
     manager_id INT NULL,
-    FOREIGN KEY (role_id) REFERENCES roll(id),
+    FOREIGN KEY (roles_id) REFERENCES roles(id),
     FOREIGN KEY (manager_id) REFERENCES employee(id)
 );

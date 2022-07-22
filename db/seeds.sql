@@ -11,7 +11,7 @@ VALUES
     ("Managment"),
     ("Sales");
 
-INSERT INTO roll (title, salary, department_id)
+INSERT INTO roles (title, salary, department_id)
 VALUES 
     ("Network Specialist", 60000, 1),
     ("Front End Developer", 40000, 1),
@@ -35,7 +35,7 @@ VALUES
     ("Moral Manager", 300000, 5),
     ("Coffee Runner", 1000001, 5);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
+INSERT INTO employee (first_name, last_name, roles_id, manager_id)
 VALUES 
     ("John", "Snow", 1, 4),
     ("Eddard", "Stark", 2, 4),

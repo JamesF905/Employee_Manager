@@ -36,9 +36,9 @@ function main_menu(){
     })
     .then(menu => {
         if (menu.choice !== "Exit") {
-            menu.choice === "View all Departments" ? viewThem("Department", "id") :
-            menu.choice === "View all Roles" ? viewThem("Roles") :
-            menu.choice === "View all Employees" ? viewThem("Employees") :
+            menu.choice === "View all Departments" ? viewDepartments("Department", "id") :
+            menu.choice === "View all Roles" ? viewRoles("Roles") :
+            menu.choice === "View all Employees" ? viewEmployees("Employee") :
             menu.choice === "Add a Department" ? addDepartment() :
             menu.choice === "Add a Role" ? addRole() :
             menu.choice === "Add an Employee" ? addEmployee() :
@@ -50,13 +50,17 @@ function main_menu(){
     });        
 };
 
+function queryPoster(){
 
+}
 
 function viewThem(name,o){
     order = o ? ` ORDER BY ${o}` : '';
     db.query(`SELECT * FROM ${name}${order};`, (err, res) => {
         if(!err){
-            console.log("\nDepartment\n");
+            //Handler to find the names of departments if name = roles
+            //console.log(res[0].department_id);
+            console.log(`\n${name}\n`);            
             console.table(res)
             main_menu();
         }else{
@@ -75,9 +79,22 @@ function viewDepartments(){
 }
 
 function viewRoles(){
-    console.log("You selected view Roles");
+    db.query(`SELECT roles.id, roles.title, roles.salary, department.name AS Department FROM roles JOIN department ON department.id = roles.department_id`, (err, res) => {
+        console.log("Department\n");
+        console.table(res)
+        main_menu();
+    });
+    //console.table(`\n`);
 }
 
 function viewEmployees(){
-    console.log("You selected view Employees");
+    db.query(`SELECT employee.id, employee.first_name, employee.last_name, roles.title, roles.salary, department.name AS Department, manager.first_name AS Manager
+    FROM employee e1, employee manager 
+    JOIN roles ON roles.id = employee.roles_id 
+    JOIN department ON department.id = roles.department_id 
+    JOIN employee manager, ON manager.id = manager_id`, (err, res) => {
+        console.log("Department\n");
+        console.table(res)
+        main_menu();
+    });
 }
